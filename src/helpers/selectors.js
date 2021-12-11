@@ -1,8 +1,10 @@
+// Use the state to return the appointments for a specific day
 export function selectUserByName(state, name) {
   const filteredNames = state.users.filter((user) => user.name === name);
   return filteredNames;
 }
 
+// Return the interviewers of a specific day
 export function getAppointmentsForDay(state, day) {
   const result = [];
   const dayData = state.days.filter((dai) => dai.name === day);
@@ -13,4 +15,13 @@ export function getAppointmentsForDay(state, day) {
   }
 
   return result;
+}
+
+// Add the info of the interviewer for an existing interview
+export function getInterview(state, interview) {
+  if (interview) {
+    const interviewer = state.interviewers[interview.interviewer];
+    return { ...interview, interviewer };
+  }
+  return null;
 }
