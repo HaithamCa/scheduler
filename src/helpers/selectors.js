@@ -9,7 +9,9 @@ export function getAppointmentsForDay(state, day) {
   const result = [];
   const dayData = state.days.filter((dai) => dai.name === day);
 
-  if (!dayData[0]) return result;
+  if (!dayData[0]) {
+    return result;
+  }
   for (const i of dayData[0].appointments) {
     result.push(state.appointments[i]);
   }
@@ -24,4 +26,18 @@ export function getInterview(state, interview) {
     return { ...interview, interviewer };
   }
   return null;
+}
+
+// Return the interviewers of a specific day
+export function getInterviewersForDay(state, day) {
+  const result = [];
+  const dayData = state.days.filter((dai) => dai.name === day);
+
+  if (!dayData[0]) return result;
+  console.log(dayData[0]);
+  for (const b of dayData[0].interviewers) {
+    result.push(state.interviewers[b]);
+  }
+
+  return result;
 }
