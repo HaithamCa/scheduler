@@ -7,6 +7,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -15,6 +16,8 @@ const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const DELETING = "DELETING";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 const Appointment = (props) => {
   console.log(props);
@@ -31,19 +34,19 @@ const Appointment = (props) => {
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        transition(ERROR_SAVE, true);
+        console.log(err);
+      });
   };
 
-  const confirmDelete = () => {
-    transition(CONFIRM);
-  };
-
-  const deleteAppointment = () => {
+  function destroy(event) {
     transition(DELETING, true);
-    Promise.resolve(props.cancelInterview(props.id))
-      .then(transition(EMPTY))
-      .catch((err) => console.log(err));
-  };
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch((err) => transition(ERROR_DELETE, true));
+  }
 
   return (
     <article className="appointment">
@@ -55,7 +58,7 @@ const Appointment = (props) => {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onCancel={() => back()}
-          onDelete={confirmDelete}
+          onDelete={() => transition(CONFIRM)}
           onEdit={() => transition(EDIT)}
         />
       )}
@@ -80,9 +83,15 @@ const Appointment = (props) => {
       {mode === CONFIRM && (
         <Confirm
           message="Are you sure you want to delete?"
-          onConfirm={deleteAppointment}
+          onConfirm={destroy}
           onCancel={() => back()}
         />
+      )}
+      {mode === ERROR_SAVE && (
+        <Error message="Unable to save" onClose={() => back()} />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error message="Unable to delete" onClose={() => back()} />
       )}
     </article>
   );
