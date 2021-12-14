@@ -28,12 +28,13 @@ const Appointment = (props) => {
       interviewer,
     };
     transition(SAVING);
-    Promise.resolve(props.bookInterview(props.id, interview))
+    props
+      .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch((err) => console.log(err));
   };
 
-  const deleteConfirm = () => {
+  const confirmDelete = () => {
     transition(CONFIRM);
   };
 
@@ -54,7 +55,8 @@ const Appointment = (props) => {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onCancel={() => back()}
-          onDelete={deleteConfirm}
+          onDelete={confirmDelete}
+          onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && (

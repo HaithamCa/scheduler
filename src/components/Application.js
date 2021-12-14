@@ -72,12 +72,12 @@ export default function Application(props) {
   });
 
   useEffect(() => {
-    const promiseDays = axios.get("http://localhost:3001/api/days");
+    const promiseDays = axios.get("http://localhost:8001/api/days");
     const promiseAppointments = axios.get(
-      "http://localhost:3001/api/appointments"
+      "http://localhost:8001/api/appointments"
     );
     const promiseInterviewers = axios.get(
-      "http://localhost:3001/api/interviewers"
+      "http://localhost:8001/api/interviewers"
     );
 
     Promise.all([promiseDays, promiseAppointments, promiseInterviewers]).then(
