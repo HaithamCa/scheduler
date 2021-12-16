@@ -24,7 +24,7 @@ const Form = (props) => {
     }
 
     setError("");
-    props.onSave(student, interviewer);
+    props.onSave(student, interviewer, props.isEdit);
   }
   return (
     <main className="appointment__card appointment__card--create">

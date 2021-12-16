@@ -25,14 +25,14 @@ const Appointment = (props) => {
     props.interview ? SHOW : EMPTY
   );
 
-  const save = (name, interviewer) => {
+  const save = (name, interviewer, isEdit = false) => {
     const interview = {
       student: name,
       interviewer,
     };
     transition(SAVING);
     props
-      .bookInterview(props.id, interview)
+      .bookInterview(props.id, interview, isEdit)
       .then(() => transition(SHOW))
       .catch((err) => {
         transition(ERROR_SAVE, true);
@@ -67,6 +67,7 @@ const Appointment = (props) => {
           onSave={save}
           interviewers={props.interviewers}
           onCancel={() => back()}
+          isEdit={false}
         />
       )}
       {mode === SAVING && <Status message="Saving" />}
@@ -78,6 +79,7 @@ const Appointment = (props) => {
           interviewers={props.interviewers}
           onCancel={() => back()}
           onSave={save}
+          isEdit={true}
         />
       )}
       {mode === CONFIRM && (
