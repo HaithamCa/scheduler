@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const useApplicationData = () => {
@@ -16,11 +16,11 @@ const useApplicationData = () => {
       ...state.appointments[id],
       interview: { ...interview },
     };
-
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
+    console.log(appointments);
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then(() =>

@@ -40,7 +40,7 @@ const Appointment = (props) => {
       });
   };
 
-  function destroy(event) {
+  function destroy() {
     transition(DELETING, true);
     props
       .cancelInterview(props.id)
