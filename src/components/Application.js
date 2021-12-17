@@ -11,7 +11,7 @@ import {
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application() {
-  const { state, setDay, bookInterview, cancelInterview } =
+  const { state, setDay, bookInterview, cancelInterview, editSpots } =
     useApplicationData();
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
@@ -26,6 +26,7 @@ export default function Application() {
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
+        editSpots={editSpots}
       />
     );
   });
@@ -53,7 +54,10 @@ export default function Application() {
           alt="Lighthouse Labs"
         />{" "}
       </section>
-      <section className="schedule">{schedule}</section>
+      <section className="schedule">
+        {schedule}
+        <Appointment key="last" time="5pm" />
+      </section>
     </main>
   );
 }

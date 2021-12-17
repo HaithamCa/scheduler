@@ -10,12 +10,11 @@ describe("Appointments", () => {
   it("should book an interview", () => {
     cy.get("[alt=Add]").first().click({ force: true });
 
-    cy.get("[data-testid=student-name-input]").type("Lydia Miller-Jones", {
-      force: true,
-    });
-    cy.get('[alt="Sylvia Palmer"]').click({ force: true });
+    cy.get("[data-testid=student-name-input]").type("Lydia Miller-Jones");
+    // cy.get('[alt="Sylvia Palmer"]').click();
+    cy.get("li").children('[alt="Sylvia Palmer"]').click();
 
-    cy.contains("Save").click({ force: true });
+    cy.contains("Save").click();
 
     cy.contains(".appointment__card--show", "Lydia Miller-Jones");
     cy.contains(".appointment__card--show", "Sylvia Palmer");
