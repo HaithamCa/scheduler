@@ -3,7 +3,6 @@ import React from "react";
 import "../components/InterviewerListItem.scss";
 
 const InterviewerListItem = (props) => {
-  console.log(props);
   const interviewerClass = classNames("interviewers__item", {
     "interviewers__item--selected": props.selected,
   });
