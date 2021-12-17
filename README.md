@@ -5,6 +5,10 @@ This is a single-page app built on React.js that allows users to book, edit or c
 ## Screenshots
 
 !["Add new appointment"](https://github.com/HaithamCa/scheduler/blob/master/Docs/Add-new-appointment.png)
+!["you can edit appointment form"](https://github.com/HaithamCa/scheduler/blob/master/Docs/appointment--form.png)
+!["Easy to add new appointment"](https://github.com/HaithamCa/scheduler/blob/master/Docs/appointment-form.png)
+!["Can figureout how many spots are there"](https://github.com/HaithamCa/scheduler/blob/master/Docs/available-appointment.png)
+!["Can delete an appontment if the guest won't come"](https://github.com/HaithamCa/scheduler/blob/master/Docs/available-appointment.png)
 
 ## Setup
 
