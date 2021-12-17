@@ -24,7 +24,8 @@ const Appointment = (props) => {
     props.interview ? SHOW : EMPTY
   );
 
-  const save = (name, interviewer, isEdit = false) => {
+  const save = (name, interviewer) => {
+    const isEdit = props.interview && props.interview.student;
     const interview = {
       student: name,
       interviewer,
