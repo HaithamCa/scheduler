@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
+// Handle the different switch between modes and keep tracks of the previous modes to be able to go back
 const useVisualMode = (initial) => {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
+  // Set a new mode and add it to the history
   const transition = (newMode, replace) => {
     setMode(newMode);
     if (replace) {

@@ -23,7 +23,7 @@ const Appointment = (props) => {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-
+  // Call the bookInterview function in the Application component and wait for it to complete before displaying a new mode
   const save = (name, interviewer) => {
     const isEdit = props.interview && props.interview.student;
     const interview = {
@@ -38,7 +38,7 @@ const Appointment = (props) => {
         transition(ERROR_SAVE, true);
       });
   };
-
+  // Call the destroy function in the Application component and wait for it to complete before displaying a new mode
   function destroy() {
     transition(DELETING, true);
     props
