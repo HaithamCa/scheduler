@@ -4,6 +4,8 @@ This is a single-page app built on React.js that allows users to book, edit or c
 
 ## Screenshots
 
+!["Add new appointment"](https://github.com/HaithamCa/scheduler/blob/master/Docs/Add-new-appointment.png)
+
 ## Setup
 
 Install dependencies with `npm install`.
