@@ -20,12 +20,12 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 const Appointment = (props) => {
-  console.log(props);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
-  const save = (name, interviewer, isEdit = false) => {
+  const save = (name, interviewer) => {
+    const isEdit = props.interview && props.interview.student;
     const interview = {
       student: name,
       interviewer,
@@ -36,7 +36,6 @@ const Appointment = (props) => {
       .then(() => transition(SHOW))
       .catch((err) => {
         transition(ERROR_SAVE, true);
-        console.log(err);
       });
   };
 
