@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const useApplicationData = () => {
+  // Data and state management
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
-
+  // Switch to a new day
   const setDay = (day) => setState({ ...state, day });
-
+  // Update interviews spots when editing and canceling
   const updateSpots = (state, appointments, isDelete, isEdit) => {
     const days = state.days.map((day) => {
       if (state.day === day.name) {
@@ -24,7 +25,7 @@ const useApplicationData = () => {
     });
     return { ...state, appointments, days };
   };
-
+  // Add the new interview in the appointments state and make the PUT request
   const bookInterview = (id, interview, isEdit = false) => {
     const appointment = {
       ...state.appointments[id],
@@ -44,7 +45,7 @@ const useApplicationData = () => {
   const editSpots = state.days.map((day) => {
     return day.name === state.day ? { ...day, spots: day.spots + 1 } : day;
   });
-
+  // Remove the interview from the appointments state and make a DELETE request
   const cancelInterview = (id) => {
     const appointment = {
       ...state.appointments[id],
@@ -67,7 +68,7 @@ const useApplicationData = () => {
       })
     );
   };
-
+  // Take all the data from the database to set up the initial state
   useEffect(() => {
     const promiseDays = axios.get("http://localhost:8001/api/days");
     const promiseAppointments = axios.get(
