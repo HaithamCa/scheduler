@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 const useApplicationData = () => {
@@ -18,9 +18,12 @@ const useApplicationData = () => {
           appointments: action.appointments,
           interviewers: action.interviewers,
         };
-      // Update the number of spots remaining for a specific day when booking, editing, and canceling
       case SET_INTERVIEW:
-        return { ...state, appointments: action.appointments };
+        return {
+          ...state,
+          appointments: action.appointments,
+          days: action.days || state.days,
+        };
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -64,7 +67,16 @@ const useApplicationData = () => {
     };
     return axios
       .put(`/api/appointments/${id}`, { interview })
-      .then(() => dispatch({ type: SET_INTERVIEW, appointments }));
+      .then(() => {
+        const days = isEdit
+          ? state.days
+          : state.days.map((day) =>
+              day.name === state.day
+                ? { ...day, spots: Math.max(0, day.spots - 1) }
+                : day
+            );
+        dispatch({ type: SET_INTERVIEW, appointments, days });
+      });
   };
 
   const editSpots = state.days.map((day) => {
@@ -83,16 +95,12 @@ const useApplicationData = () => {
       [id]: appointment,
     };
 
-    return axios.delete(`/api/appointments/${id}`).then(() =>
-      dispatch((state) => {
-        const newDays = state.days.map((day) => {
-          return day.name === state.day
-            ? { ...day, spots: day.spots + 1 }
-            : day;
-        });
-        return { ...state, appointments, days: newDays };
-      })
-    );
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      const days = state.days.map((day) =>
+        day.name === state.day ? { ...day, spots: day.spots + 1 } : day
+      );
+      dispatch({ type: SET_INTERVIEW, appointments, days });
+    });
   };
   // Take all the data from the database to set up the initial state
   useEffect(() => {
