@@ -4,5 +4,29 @@ import ReactDOM from "react-dom";
 import "index.scss";
 
 import Application from "components/Application";
+import AuthScreen, { AuthSplash } from "components/Auth/AuthScreen";
+import useAuth from "hooks/useAuth";
 
-ReactDOM.render(<Application />, document.getElementById("root"));
+function Root() {
+  const { user, ready, login, register, loginDemo, loginViewerDemo, logout } =
+    useAuth();
+
+  if (!ready) {
+    return <AuthSplash />;
+  }
+
+  if (!user) {
+    return (
+      <AuthScreen
+        onLogin={login}
+        onRegister={register}
+        onDemo={loginDemo}
+        onViewerDemo={loginViewerDemo}
+      />
+    );
+  }
+
+  return <Application user={user} onLogout={logout} />;
+}
+
+ReactDOM.render(<Root />, document.getElementById("root"));

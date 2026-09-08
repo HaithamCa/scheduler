@@ -1,6 +1,7 @@
 import React from "react";
 import "components/Application.scss";
 
+import Sidebar from "./Sidebar";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import {
@@ -10,7 +11,7 @@ import {
 } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
-export default function Application() {
+export default function Application({ user, onLogout }) {
   const { state, setDay, bookInterview, cancelInterview, editSpots } =
     useApplicationData();
   const appointments = getAppointmentsForDay(state, state.day);
@@ -33,27 +34,14 @@ export default function Application() {
 
   return (
     <main className="layout">
-      <section className="sidebar">
-        <img
-          className="sidebar--centered"
-          src="images/logo.png"
-          alt="Interview Scheduler"
+      <Sidebar user={user} onLogout={onLogout}>
+        <DayList
+          days={state.days}
+          day={state.day}
+          setDay={setDay}
+          interviewers={state.interviewers}
         />
-        <hr className="sidebar__separator sidebar--centered" />
-        <nav className="sidebar__menu">
-          <DayList
-            days={state.days}
-            day={state.day}
-            setDay={setDay}
-            interviewers={state.interviewers}
-          />
-        </nav>
-        <img
-          className="sidebar__lhl sidebar--centered"
-          src="images/lhl.png"
-          alt="Lighthouse Labs"
-        />{" "}
-      </section>
+      </Sidebar>
       <section className="schedule">
         {schedule}
         <Appointment key="last" time="5pm" />

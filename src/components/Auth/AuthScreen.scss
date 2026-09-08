@@ -1,0 +1,326 @@
+@import "styles/variables.scss";
+
+.auth-splash {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $dark-background;
+}
+
+.auth {
+  display: flex;
+  min-height: 100vh;
+  background: $dark-background;
+}
+
+.auth__brand {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 5rem;
+  color: $white;
+  background:
+    radial-gradient(circle at top left, rgba($booked-color, 0.22), transparent 42%),
+    radial-gradient(circle at bottom right, rgba($danger-color, 0.18), transparent 36%),
+    $dark-background;
+}
+
+.auth__logo {
+  width: 16rem;
+  margin-bottom: 2.5rem;
+}
+
+.auth__headline {
+  margin: 0;
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+.auth__lede {
+  margin: 1.2rem 0 2.4rem;
+  max-width: 28ch;
+  color: rgba($white, 0.72);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.auth__points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: rgba($white, 0.88);
+  font-size: 1.05rem;
+
+  li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 1.6rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 1rem;
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: $confirm-color;
+    }
+  }
+}
+
+.auth__panel {
+  width: min(34rem, 46vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: darken($white, 4%);
+}
+
+.auth__card {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.auth__eyebrow {
+  margin: 0 0 0.4rem;
+  color: $confirm-color;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth__title {
+  margin: 0;
+  color: $dark-background;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.auth__subtitle {
+  margin: 0.5rem 0 1.6rem;
+  color: #8395a7;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  color: $dark-background;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  input {
+    width: 100%;
+    height: 3rem;
+    padding: 0 0.95rem;
+    border: 1px solid darken($white, 12%);
+    border-radius: 0.7rem;
+    background: $white;
+    color: $dark-background;
+    font-family: $font-family;
+    font-size: 1rem;
+    font-weight: 400;
+
+    &:focus {
+      outline: none;
+      border-color: $booked-color;
+      box-shadow: 0 0 0 3px rgba($booked-color, 0.18);
+    }
+
+    &::placeholder {
+      color: #a5b1c2;
+    }
+  }
+}
+
+.auth__password {
+  position: relative;
+  display: block;
+
+  input {
+    padding-right: 4.2rem;
+  }
+}
+
+.auth__toggle {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #8395a7;
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth__error {
+  margin: -0.2rem 0 1rem;
+  color: $danger-color;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.auth__submit,
+.auth__demo {
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.7rem;
+  font-family: $font-family;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth__submit {
+  border: 0;
+  color: $white;
+  background: $dark-background;
+
+  &:hover:not(:disabled) {
+    background: lighten($dark-background, 8%);
+  }
+}
+
+.auth__demo {
+  margin-top: 0.7rem;
+  border: 2px solid $dark-background;
+  color: $dark-background;
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    color: $white;
+    background: $dark-background;
+  }
+}
+
+.auth__demo--viewer {
+  border-color: $confirm-color;
+  color: darken($confirm-color, 8%);
+
+  &:hover:not(:disabled) {
+    color: $white;
+    background: $confirm-color;
+    border-color: $confirm-color;
+  }
+}
+
+.auth__submit:disabled,
+.auth__demo:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.auth__roles {
+  margin: 0 0 1.1rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+
+  legend {
+    margin-bottom: 0.55rem;
+    color: $dark-background;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+}
+
+.auth__role {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-bottom: 0.55rem;
+  padding: 0.8rem 0.85rem;
+  border: 1px solid darken($white, 12%);
+  border-radius: 0.75rem;
+  background: $white;
+  cursor: pointer;
+
+  input {
+    margin-top: 0.2rem;
+  }
+
+  strong {
+    display: block;
+    color: $dark-background;
+    font-size: 0.95rem;
+  }
+
+  span {
+    color: #8395a7;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  &--selected {
+    border-color: $dark-background;
+    box-shadow: 0 0 0 2px rgba($dark-background, 0.12);
+  }
+}
+
+.auth__switch {
+  margin: 1.3rem 0 0;
+  color: #8395a7;
+  font-size: 0.95rem;
+  text-align: center;
+
+  button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: $dark-background;
+    font-family: $font-family;
+    font-size: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.auth__hint {
+  margin: 1rem 0 0;
+  color: #8395a7;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media only screen and (max-width: 960px) {
+  .auth {
+    flex-direction: column;
+  }
+
+  .auth__brand {
+    padding: 2.5rem 2rem 2rem;
+  }
+
+  .auth__headline {
+    font-size: 2.4rem;
+    max-width: none;
+  }
+
+  .auth__lede {
+    max-width: none;
+    margin-bottom: 1.2rem;
+  }
+
+  .auth__points {
+    display: none;
+  }
+
+  .auth__panel {
+    width: 100%;
+    padding: 2rem 1.5rem 3rem;
+  }
+}

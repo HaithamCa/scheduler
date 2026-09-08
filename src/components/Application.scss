@@ -23,8 +23,84 @@
     flex: 1;
   }
 
-  &__lhl {
-    margin-top: 2rem;
+  &__account {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 1.25rem 0;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    background: rgba($white, 0.06);
+  }
+
+  &__avatar {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: $booked-color;
+    color: $white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  &__avatar--viewer {
+    background: $confirm-color;
+  }
+
+  &__account-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__account-name,
+  &__account-email {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__account-name {
+    color: $white;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  &__account-email {
+    color: #8395a7;
+    font-size: 0.75rem;
+  }
+
+  &__role {
+    margin: 0.15rem 0 0;
+    color: rgba($white, 0.55);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__logout {
+    width: 100%;
+    margin-top: 0.15rem;
+    padding: 0.45rem 0;
+    border: 0;
+    background: transparent;
+    color: lighten($danger-color, 8%);
+    font-family: $font-family;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      color: $white;
+    }
   }
 }
 

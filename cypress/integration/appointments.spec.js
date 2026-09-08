@@ -3,6 +3,7 @@ describe("Appointments", () => {
     cy.request("GET", "/api/debug/reset");
 
     cy.visit("/");
+    cy.loginDemo();
 
     cy.contains("Monday");
   });

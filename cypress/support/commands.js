@@ -9,8 +9,13 @@
 // ***********************************************
 //
 //
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add("loginDemo", () => {
+  cy.get("body").then(($body) => {
+    if ($body.find('[data-testid="auth-demo"]').length) {
+      cy.get('[data-testid="auth-demo"]').click();
+    }
+  });
+});
 //
 //
 // -- This is a child command --
