@@ -1,0 +1,420 @@
+@import "styles/variables.scss";
+
+.availability {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 2.25rem 2.5rem 3rem;
+  background: #f4f6f8;
+}
+
+.availability__inner {
+  width: 100%;
+  max-width: 46rem;
+}
+
+.availability__header {
+  margin-bottom: 1.5rem;
+}
+
+.availability__eyebrow {
+  margin: 0 0 0.35rem;
+  color: $confirm-color;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.availability__title {
+  margin: 0;
+  color: $dark-background;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.availability__lede {
+  margin: 0.5rem 0 1rem;
+  max-width: 36rem;
+  color: #8395a7;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.availability__stats {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.availability__stat {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.availability__stat--open {
+  color: darken($confirm-color, 8%);
+  background: rgba($confirm-color, 0.14);
+}
+
+.availability__stat--busy {
+  color: darken($dark-background, 0%);
+  background: rgba($dark-background, 0.08);
+}
+
+.availability__week {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.availability__day {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.8rem 0.7rem;
+  border: 1px solid darken($white, 12%);
+  border-radius: 0.8rem;
+  background: $white;
+  color: $dark-background;
+  font-family: $font-family;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $booked-color;
+  }
+
+  &--selected {
+    border-color: $dark-background;
+    background: $dark-background;
+    color: $white;
+  }
+}
+
+.availability__day-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.availability__meter {
+  display: block;
+  height: 0.35rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba($dark-background, 0.12);
+
+  span {
+    display: block;
+    height: 100%;
+    background: $danger-color;
+  }
+}
+
+.availability__day--selected .availability__meter {
+  background: rgba($white, 0.18);
+
+  span {
+    background: $white;
+  }
+}
+
+.availability__day-meta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.availability__legend {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+  color: #8395a7;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.availability__dot {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  vertical-align: middle;
+
+  &--open {
+    background: $confirm-color;
+  }
+
+  &--busy {
+    background: $dark-background;
+  }
+}
+
+.availability__slots {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.availability__slot {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.7rem;
+  border-radius: 0.85rem;
+}
+
+.availability__hit {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 5.2rem;
+  padding: 0.9rem 1.1rem;
+  border: 0;
+  border-radius: 0.85rem;
+  background: transparent;
+  color: inherit;
+  font-family: $font-family;
+  text-align: left;
+}
+
+.availability__slot--open {
+  border: 1px dashed rgba($confirm-color, 0.45);
+  background: rgba($confirm-color, 0.08);
+  color: $dark-background;
+
+  .availability__hit {
+    cursor: pointer;
+  }
+
+  .availability__hit:hover {
+    background: rgba($confirm-color, 0.14);
+  }
+}
+
+.availability__slot--selected {
+  border-style: solid;
+  border-color: $confirm-color;
+  box-shadow: 0 0 0 3px rgba($confirm-color, 0.16);
+}
+
+.availability__slot--busy {
+  border: 1px solid transparent;
+  background: $dark-background;
+  color: $white;
+
+  .availability__hit:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+  }
+}
+
+.availability__slot--mine {
+  border: 1px solid transparent;
+  background: $booked-color;
+  color: $white;
+
+  .availability__hit {
+    cursor: pointer;
+  }
+}
+
+.availability__slot--end {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  border: 0;
+  background: transparent;
+  color: #8395a7;
+  min-height: auto;
+  padding: 0.4rem 1.1rem;
+}
+
+.availability__time {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.availability__copy {
+  min-width: 0;
+
+  strong {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  p {
+    margin: 0.15rem 0 0;
+    font-size: 0.9rem;
+    opacity: 0.75;
+  }
+}
+
+.availability__with {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba($white, 0.7);
+}
+
+.availability__badge {
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.availability__slot--open .availability__badge {
+  color: darken($confirm-color, 10%);
+  background: rgba($confirm-color, 0.16);
+}
+
+.availability__slot--busy .availability__badge,
+.availability__slot--mine .availability__badge {
+  color: $white;
+  background: rgba($white, 0.12);
+}
+
+.availability__dot--mine {
+  background: $booked-color;
+}
+
+.availability__error {
+  margin: 0 0 1rem;
+  color: $danger-color;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.availability__picker {
+  padding: 0 1.1rem 1.1rem;
+}
+
+.availability__picker-title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.availability__picker-hint {
+  margin: 0 0 0.8rem;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.availability__people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.availability__person {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.7rem 0.25rem 0.25rem;
+  border: 1px solid rgba($dark-background, 0.12);
+  border-radius: 999px;
+  background: $white;
+  color: $dark-background;
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  img {
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &--selected {
+    border-color: $dark-background;
+    background: $dark-background;
+    color: $white;
+  }
+}
+
+.availability__slot--mine .availability__person {
+  border-color: rgba($white, 0.35);
+}
+
+.availability__picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.availability__confirm,
+.availability__cancel {
+  height: 2.6rem;
+  padding: 0 1rem;
+  border-radius: 0.7rem;
+  font-family: $font-family;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.availability__confirm {
+  border: 0;
+  color: $white;
+  background: $dark-background;
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+}
+
+.availability__confirm--danger {
+  background: $danger-color;
+}
+
+.availability__cancel {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.availability__slot--open .availability__confirm {
+  background: $confirm-color;
+}
+
+@media only screen and (max-width: 960px) {
+  .availability {
+    margin-top: 1rem;
+  }
+
+  .availability__week {
+    grid-template-columns: repeat(5, minmax(4.5rem, 1fr));
+    overflow-x: auto;
+  }
+
+  .availability__hit {
+    grid-template-columns: 3.8rem 1fr;
+  }
+
+  .availability__badge {
+    display: none;
+  }
+}
