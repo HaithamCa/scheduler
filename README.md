@@ -1,33 +1,71 @@
 # Interview Scheduler
 
-This is a single-page app built on React.js that allows users to book, edit or cancel interviews for each day of the week (Monday to Friday).
+A React app for booking weekday interviews. One calendar, two doors into it.
 
-## Screenshots
+**Coordinators** see the full board: who is coming, who is interviewing them, and the tools to add, edit, or cancel. **Students** see which hours are open or taken, pick a free slot, and only then learn who they will meet. Other people’s names stay hidden.
 
-!["Add new appointment"](https://github.com/HaithamCa/scheduler/blob/master/Docs/Add-new-appointment.png)
-!["you can edit appointment form"](https://github.com/HaithamCa/scheduler/blob/master/Docs/appointment--form.png)
-!["Easy to add new appointment"](https://github.com/HaithamCa/scheduler/blob/master/Docs/appointment-form.png)
-!["Can figureout how many spots are there"](https://github.com/HaithamCa/scheduler/blob/master/Docs/available-appointment.png)
-!["Can delete an appontment if the guest won't come"](https://github.com/HaithamCa/scheduler/blob/master/Docs/available-appointment.png)
+The client runs at [http://localhost:8000](http://localhost:8000). It talks to the [scheduler API](https://github.com/lighthouse-labs/scheduler-api) on port 8001.
 
-## Setup
+## Two views
 
-Install dependencies with `npm install`.
+| | Coordinator | Student |
+| --- | --- | --- |
+| Purpose | Run the week | Claim an open hour |
+| Booked slots | Student + interviewer | “Booked” only |
+| Your own slot | Same as any booking | “Yours”, with interviewer name and photo |
+| Actions | Create, edit, cancel any interview | Pick an open time, or release your own |
+| Demo | `demo@scheduler.app` / `demo1234` | `viewer@scheduler.app` / `viewer1234` |
 
-## Running Webpack Development Server
+Create an account and choose **Manage bookings** or **Check availability**. The role is saved with the session, so refresh keeps you in the right view.
+
+## How a booking works
+
+1. Sign in. The role decides which UI you get.
+2. Choose a day, Monday through Friday. Hours run from 12pm to 4pm.
+3. **Coordinator:** tap an empty hour, enter a student, pick an interviewer, save. **Student:** tap an open hour, pick an interviewer, confirm under your account name.
+4. Remaining spots on that day go down by one. The API stores the interview; the React app updates the board.
+5. Cancel or release the hour to open it again.
+
+Students never see who took someone else’s slot. They do see their own interviewer, because that meeting is theirs.
+
+## Run locally
+
+Use **Node 16**. This project’s toolchain does not install cleanly on newer Node.
+
+You also need the API and Postgres. Clone [scheduler-api](https://github.com/lighthouse-labs/scheduler-api) beside this repo, create `scheduler_development`, then from that project:
 
 ```sh
+npm install
 npm start
 ```
 
-## Running Jest Test Framework
+Reset seed data anytime:
 
 ```sh
-npm test
+curl http://localhost:8001/api/debug/reset
 ```
 
-## Running Storybook Visual Testbed
+In this repo:
 
 ```sh
-npm run storybook
+nvm use 16
+npm install
+npm start
 ```
+
+Open [http://localhost:8000](http://localhost:8000).
+
+Accounts are stored in this browser (not on the API). Passwords are hashed before they are saved.
+
+## Scripts
+
+```sh
+npm start          # webpack dev server, port 8000
+npm test           # Jest
+npm run storybook  # component workshop, port 9009
+npm run cypress    # end-to-end tests
+```
+
+## Stack
+
+React 16, custom hooks, and a reducer for days, appointments, and interviewers. Axios talks to the API. Sass styles the two UIs. Auth is client-side with a coordinator or viewer role.
