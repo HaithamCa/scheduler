@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./styles.scss";
 import Header from "./Header";
 import Show from "./Show";
@@ -23,6 +23,14 @@ const Appointment = (props) => {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+  const mounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   // Call the bookInterview function in the Application component and wait for it to complete before displaying a new mode
   const save = (name, interviewer) => {
     const isEdit = props.interview && props.interview.student;
@@ -33,9 +41,11 @@ const Appointment = (props) => {
     transition(SAVING);
     props
       .bookInterview(props.id, interview, isEdit)
-      .then(() => transition(SHOW))
+      .then(() => {
+        if (mounted.current) transition(SHOW);
+      })
       .catch((err) => {
-        transition(ERROR_SAVE, true);
+        if (mounted.current) transition(ERROR_SAVE, true);
       });
   };
   // Call the destroy function in the Application component and wait for it to complete before displaying a new mode
@@ -43,8 +53,12 @@ const Appointment = (props) => {
     transition(DELETING, true);
     props
       .cancelInterview(props.id)
-      .then(() => transition(EMPTY))
-      .catch((err) => transition(ERROR_DELETE, true));
+      .then(() => {
+        if (mounted.current) transition(EMPTY);
+      })
+      .catch((err) => {
+        if (mounted.current) transition(ERROR_DELETE, true);
+      });
   }
 
   return (
@@ -74,7 +88,7 @@ const Appointment = (props) => {
       {mode === EDIT && (
         <Form
           name={props.interview.student}
-          interviewer={props.interview.interviewer.id}
+          interviewer={props.interview.interviewer && props.interview.interviewer.id}
           interviewers={props.interviewers}
           onCancel={() => back()}
           onSave={save}
