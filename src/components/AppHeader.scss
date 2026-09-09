@@ -1,0 +1,102 @@
+@import "styles/variables.scss";
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 4.5rem;
+  padding: 0.75rem 1.5rem;
+  background: $dark-background;
+  border-bottom: 1px solid rgba($white, 0.08);
+}
+
+.app-header__logo {
+  height: 2.6rem;
+  width: auto;
+}
+
+.app-header__account {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.app-header__avatar {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: $booked-color;
+  color: $white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.app-header__avatar--viewer {
+  background: $confirm-color;
+}
+
+.app-header__copy {
+  min-width: 0;
+}
+
+.app-header__name,
+.app-header__email,
+.app-header__role {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-header__name {
+  color: $white;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.app-header__email {
+  color: #8395a7;
+  font-size: 0.75rem;
+}
+
+.app-header__role {
+  color: rgba($white, 0.5);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-header__logout {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba($danger-color, 0.7);
+  border-radius: 0.45rem;
+  background: transparent;
+  color: lighten($danger-color, 8%);
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    color: $white;
+    background: $danger-color;
+    border-color: $danger-color;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .app-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}

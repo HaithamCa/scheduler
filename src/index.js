@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import "index.scss";
 
+import AppHeader from "components/AppHeader";
 import Application from "components/Application";
 import Availability from "components/Availability/Availability";
 import AuthScreen, { AuthSplash } from "components/Auth/AuthScreen";
@@ -20,25 +21,39 @@ function Root() {
   } = useAuth();
 
   if (!ready) {
-    return <AuthSplash />;
+    return (
+      <div className="app-root">
+        <AuthSplash />
+      </div>
+    );
   }
 
   if (!user) {
     return (
-      <AuthScreen
-        onLogin={login}
-        onRegister={register}
-        onDemo={loginDemo}
-        onViewerDemo={loginViewerDemo}
-      />
+      <div className="app-root">
+        <AuthScreen
+          onLogin={login}
+          onRegister={register}
+          onDemo={loginDemo}
+          onViewerDemo={loginViewerDemo}
+        />
+      </div>
     );
   }
 
-  if (user.role === "viewer") {
-    return <Availability user={user} onLogout={logout} />;
-  }
+  const page =
+    user.role === "viewer" ? (
+      <Availability user={user} onLogout={logout} />
+    ) : (
+      <Application user={user} onLogout={logout} />
+    );
 
-  return <Application user={user} onLogout={logout} />;
+  return (
+    <div className="app-root">
+      <AppHeader user={user} onLogout={logout} />
+      {page}
+    </div>
+  );
 }
 
 ReactDOM.render(<Root />, document.getElementById("root"));
