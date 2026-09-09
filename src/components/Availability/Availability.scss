@@ -70,18 +70,42 @@
 }
 
 .availability__board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid darken($white, 10%);
   border-radius: 1rem;
   background: $white;
 }
 
-.availability__week {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0;
-  margin-bottom: 0;
-  border-bottom: 1px solid darken($white, 10%);
+.availability__group {
+  display: contents;
+}
+
+.availability__group:nth-child(1) .availability__day {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.availability__group:nth-child(2) .availability__day {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.availability__group:nth-child(3) .availability__day {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.availability__group:nth-child(4) .availability__day {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.availability__group:nth-child(5) .availability__day {
+  grid-column: 5;
+  grid-row: 1;
+  border-right: 0;
 }
 
 .availability__day {
@@ -91,16 +115,13 @@
   padding: 0.9rem 0.75rem;
   border: 0;
   border-right: 1px solid darken($white, 10%);
+  border-bottom: 1px solid darken($white, 10%);
   border-radius: 0;
   background: transparent;
   color: $dark-background;
   font-family: $font-family;
   text-align: left;
   cursor: pointer;
-
-  &:last-child {
-    border-right: 0;
-  }
 
   &:hover {
     background: darken($white, 4%);
@@ -147,6 +168,8 @@
 }
 
 .availability__hours {
+  grid-column: 1 / -1;
+  grid-row: 2;
   padding: 1.25rem 1.25rem 1.4rem;
   background: #f4f6f8;
 }
@@ -436,17 +459,68 @@ button.availability__status {
 }
 
 @media only screen and (max-width: 960px) {
-  .availability {
-    margin-top: 1rem;
+  .layout--availability .sidebar {
+    display: none;
   }
 
-  .availability__week {
-    grid-template-columns: repeat(5, minmax(4.5rem, 1fr));
-    overflow-x: auto;
+  .availability {
+    margin-top: 0;
+    padding: 1rem 0.85rem 2rem;
+  }
+
+  .availability__inner {
+    max-width: none;
+  }
+
+  .availability__title {
+    font-size: 1.7rem;
+  }
+
+  .availability__board {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .availability__group {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid darken($white, 10%);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .availability__day {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1rem;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .availability__day-name {
+    flex: 0 0 auto;
+    min-width: 5.5rem;
+    font-size: 1.05rem;
+  }
+
+  .availability__meter {
+    flex: 1;
+    min-width: 3rem;
   }
 
   .availability__hours {
-    padding: 1rem 0.85rem 1.15rem;
+    grid-column: auto;
+    grid-row: auto;
+    padding: 0.85rem 0.75rem 1rem;
+  }
+
+  .availability__hours-title {
+    display: none;
   }
 
   .availability__row {
@@ -461,5 +535,14 @@ button.availability__status {
 
   .availability__slot-actions {
     padding: 0 1.1rem;
+  }
+
+  .availability__status {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    height: auto;
+    padding: 0.4rem 0.7rem;
+    text-align: center;
   }
 }

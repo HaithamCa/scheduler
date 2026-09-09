@@ -161,7 +161,7 @@ Coordinator bookings are **not** limited to registered account names.
 ## 9. Student booking workflow
 
 1. Sign in as student. Header and copy use their account name.
-2. Choose a day in the week bar (or the sidebar). Hours and open/booked counts for that day appear **under the day bar**.
+2. Choose a day. Hours and open/booked counts appear **under that day**. On a phone, days are full-width; tapping another day opens its slots and closes the previous day. On desktop, the five days stay in a row and slots still sit under the week bar. The sidebar is hidden on small screens.
 3. Tap an **open** slot. Confirm **Book as {user.name}**.
 4. The app assigns **the first interviewer** returned for that day (`interviewers[0]`). The student does not pick.
 5. The API stores `{ student: user.name, interviewer: <id> }`. The appointment id is appended to `scheduler.myBookings`.

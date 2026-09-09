@@ -54,13 +54,7 @@ function timeValue(time) {
 
 export default function Availability({ user, onLogout }) {
   const { state, setDay, bookInterview, cancelInterview } = useApplicationData();
-  const appointments = getAppointmentsForDay(state, state.day)
-    .filter(Boolean)
-    .slice()
-    .sort((a, b) => timeValue(a.time) - timeValue(b.time));
   const interviewers = getInterviewersForDay(state, state.day).filter(Boolean);
-  const booked = appointments.filter(isBusy).length;
-  const open = appointments.length - booked;
 
   const [mine, setMine] = useState(() => readMine(user.email));
   const [selectedId, setSelectedId] = useState(null);
@@ -137,8 +131,118 @@ export default function Availability({ user, onLogout }) {
       .then(() => setBusyAction(false));
   };
 
+  const renderSlots = (dayAppointments) =>
+    dayAppointments.map((appointment) => {
+      const busy = isBusy(appointment);
+      const mineSlot = isMine(appointment);
+      const selected = selectedId === appointment.id;
+      const interview = mineSlot
+        ? getInterview(state, appointment.interview)
+        : null;
+      const withName =
+        interview && interview.interviewer && interview.interviewer.name;
+      const withAvatar =
+        interview && interview.interviewer && interview.interviewer.avatar;
+      const label = mineSlot
+        ? "Your interview"
+        : busy
+        ? "Booked"
+        : selected
+        ? "Selected"
+        : "Open";
+      const detail = mineSlot
+        ? withName
+          ? `You’ll meet with ${withName}. Cancel only this hour.`
+          : "This is your booking. Cancel only this hour."
+        : busy
+        ? "This slot is taken."
+        : selected
+        ? "Confirm this time below."
+        : "Tap to pick this time.";
+
+      return (
+        <li key={appointment.id} className={slotClass(busy, mineSlot, selected)}>
+          <div className="availability__row">
+            <button
+              type="button"
+              className="availability__hit"
+              disabled={busy}
+              onClick={() => pickSlot(appointment)}
+            >
+              <time className="availability__time">{appointment.time}</time>
+              <div className="availability__copy">
+                <strong>{label}</strong>
+                <p>{detail}</p>
+              </div>
+            </button>
+            <span className="availability__slot-actions">
+              {mineSlot && withAvatar && (
+                <img
+                  className="availability__with"
+                  src={withAvatar}
+                  alt={withName || "Your interviewer"}
+                />
+              )}
+              {mineSlot ? (
+                <button
+                  type="button"
+                  className="availability__status availability__status--booked"
+                  disabled={busyAction}
+                  onClick={() => cancelBooking(appointment)}
+                >
+                  {busyAction ? "Canceling…" : "Cancel"}
+                </button>
+              ) : (
+                <span
+                  className={
+                    busy
+                      ? "availability__status availability__status--booked"
+                      : "availability__status availability__status--open"
+                  }
+                >
+                  {busy ? "Booked" : `Book as ${user.name}`}
+                </span>
+              )}
+            </span>
+          </div>
+
+          {selected && !busy && (
+            <div className="availability__picker">
+              <p className="availability__picker-title">
+                Book {appointment.time} as {user.name}
+              </p>
+              <p className="availability__picker-hint">
+                This hour will be saved under your account name. Your other days stay booked.
+              </p>
+              <div className="availability__picker-actions">
+                <button
+                  type="button"
+                  className="availability__confirm"
+                  disabled={busyAction}
+                  onClick={() => confirmBooking(appointment)}
+                >
+                  {busyAction ? "Booking…" : `Book as ${user.name}`}
+                </button>
+                <button
+                  type="button"
+                  className="availability__cancel"
+                  disabled={busyAction}
+                  onClick={() => {
+                    setSelectedId(null);
+                    setError("");
+                  }}
+                >
+                  Not this time
+                </button>
+              </div>
+            </div>
+          )}
+        </li>
+      );
+    });
+
   return (
-    <main className="layout">
+    <main className="layout layout--availability">
       <Sidebar user={user} onLogout={onLogout}>
         <DayList days={state.days} day={state.day} setDay={setDay} />
       </Sidebar>
@@ -154,23 +258,36 @@ export default function Availability({ user, onLogout }) {
           </header>
 
           <div className="availability__board">
-            <div className="availability__week" role="tablist" aria-label="Days this week">
-              {state.days.map((day) => {
-                const total = (day.appointments && day.appointments.length) || 0;
-                const openSpots = day.spots;
-                const taken = Math.max(total - openSpots, 0);
-                const fill = total ? (taken / total) * 100 : 0;
-                const selected = day.name === state.day;
-                const hasMine = (day.appointments || []).some((id) =>
-                  isMine(state.appointments[id])
-                );
+            {state.days.map((day) => {
+              const total = (day.appointments && day.appointments.length) || 0;
+              const openSpots = day.spots;
+              const taken = Math.max(total - openSpots, 0);
+              const fill = total ? (taken / total) * 100 : 0;
+              const selected = day.name === state.day;
+              const hasMine = (day.appointments || []).some((id) =>
+                isMine(state.appointments[id])
+              );
+              const dayAppointments = getAppointmentsForDay(state, day.name)
+                .filter(Boolean)
+                .slice()
+                .sort((a, b) => timeValue(a.time) - timeValue(b.time));
+              const dayBooked = dayAppointments.filter(isBusy).length;
+              const dayOpen = dayAppointments.length - dayBooked;
 
-                return (
+              return (
+                <div
+                  key={day.id}
+                  className={
+                    selected
+                      ? "availability__group availability__group--open"
+                      : "availability__group"
+                  }
+                >
                   <button
-                    key={day.id}
                     type="button"
                     role="tab"
                     aria-selected={selected}
+                    aria-expanded={selected}
                     className={
                       selected
                         ? "availability__day availability__day--selected"
@@ -178,7 +295,7 @@ export default function Availability({ user, onLogout }) {
                     }
                     onClick={() => setDay(day.name)}
                   >
-                    <span className="availability__day-name">{day.name.slice(0, 3)}</span>
+                    <span className="availability__day-name">{day.name}</span>
                     <span className="availability__meter" aria-hidden="true">
                       <span style={{ width: `${fill}%` }} />
                     </span>
@@ -186,144 +303,35 @@ export default function Availability({ user, onLogout }) {
                       {openSpots} open{hasMine ? " · yours" : ""}
                     </span>
                   </button>
-                );
-              })}
-            </div>
 
-            <div className="availability__hours" aria-live="polite">
-              <div className="availability__hours-head">
-                <h2 className="availability__hours-title">{state.day}</h2>
-                <div className="availability__stats">
-                  <span className="availability__stat availability__stat--open">
-                    {open} open
-                  </span>
-                  <span className="availability__stat availability__stat--busy">
-                    {booked} booked
-                  </span>
-                </div>
-              </div>
-
-              {error && (
-                <p className="availability__error" role="alert">
-                  {error}
-                </p>
-              )}
-
-          <ol className="availability__slots">
-            {appointments.map((appointment) => {
-              const busy = isBusy(appointment);
-              const mineSlot = isMine(appointment);
-              const selected = selectedId === appointment.id;
-              const interview = mineSlot
-                ? getInterview(state, appointment.interview)
-                : null;
-              const withName =
-                interview && interview.interviewer && interview.interviewer.name;
-              const withAvatar =
-                interview && interview.interviewer && interview.interviewer.avatar;
-              const label = mineSlot
-                ? "Your interview"
-                : busy
-                ? "Booked"
-                : selected
-                ? "Selected"
-                : "Open";
-              const detail = mineSlot
-                ? withName
-                  ? `You’ll meet with ${withName}. Cancel only this hour.`
-                  : "This is your booking. Cancel only this hour."
-                : busy
-                ? "This slot is taken."
-                : selected
-                ? "Confirm this time below."
-                : "Tap to pick this time.";
-
-              return (
-                <li
-                  key={appointment.id}
-                  className={slotClass(busy, mineSlot, selected)}
-                >
-                  <div className="availability__row">
-                    <button
-                      type="button"
-                      className="availability__hit"
-                      disabled={busy}
-                      onClick={() => pickSlot(appointment)}
-                    >
-                      <time className="availability__time">{appointment.time}</time>
-                      <div className="availability__copy">
-                        <strong>{label}</strong>
-                        <p>{detail}</p>
+                  {selected && (
+                    <div className="availability__hours" aria-live="polite">
+                      <div className="availability__hours-head">
+                        <h2 className="availability__hours-title">{day.name}</h2>
+                        <div className="availability__stats">
+                          <span className="availability__stat availability__stat--open">
+                            {dayOpen} open
+                          </span>
+                          <span className="availability__stat availability__stat--busy">
+                            {dayBooked} booked
+                          </span>
+                        </div>
                       </div>
-                    </button>
-                    <span className="availability__slot-actions">
-                      {mineSlot && withAvatar && (
-                        <img
-                          className="availability__with"
-                          src={withAvatar}
-                          alt={withName || "Your interviewer"}
-                        />
-                      )}
-                      {mineSlot ? (
-                        <button
-                          type="button"
-                          className="availability__status availability__status--booked"
-                          disabled={busyAction}
-                          onClick={() => cancelBooking(appointment)}
-                        >
-                          {busyAction ? "Canceling…" : "Cancel"}
-                        </button>
-                      ) : (
-                        <span
-                          className={
-                            busy
-                              ? "availability__status availability__status--booked"
-                              : "availability__status availability__status--open"
-                          }
-                        >
-                          {busy ? "Booked" : `Book as ${user.name}`}
-                        </span>
-                      )}
-                    </span>
-                  </div>
 
-                  {selected && !busy && (
-                    <div className="availability__picker">
-                      <p className="availability__picker-title">
-                        Book {appointment.time} as {user.name}
-                      </p>
-                      <p className="availability__picker-hint">
-                        This hour will be saved under your account name. Your other days stay booked.
-                      </p>
-                      <div className="availability__picker-actions">
-                        <button
-                          type="button"
-                          className="availability__confirm"
-                          disabled={busyAction}
-                          onClick={() => confirmBooking(appointment)}
-                        >
-                          {busyAction ? "Booking…" : `Book as ${user.name}`}
-                        </button>
-                        <button
-                          type="button"
-                          className="availability__cancel"
-                          disabled={busyAction}
-                          onClick={() => {
-                            setSelectedId(null);
-                            setError("");
-                          }}
-                        >
-                          Not this time
-                        </button>
-                      </div>
+                      {error && (
+                        <p className="availability__error" role="alert">
+                          {error}
+                        </p>
+                      )}
+
+                      <ol className="availability__slots">
+                        {renderSlots(dayAppointments)}
+                      </ol>
                     </div>
                   )}
-
-                </li>
+                </div>
               );
             })}
-          </ol>
-            </div>
           </div>
         </div>
       </section>
