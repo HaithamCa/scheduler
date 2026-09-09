@@ -1,5 +1,20 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import axios from "axios";
+
+function dayHasAppointment(day, appointmentId) {
+  return (day.appointments || []).some(
+    (id) => Number(id) === Number(appointmentId)
+  );
+}
+
+function adjustSpots(days, appointmentId, delta) {
+  return days.map((day) => {
+    if (!dayHasAppointment(day, appointmentId)) {
+      return day;
+    }
+    return { ...day, spots: Math.max(0, day.spots + delta) };
+  });
+}
 
 const useApplicationData = () => {
   // use REDUCER
@@ -38,6 +53,8 @@ const useApplicationData = () => {
     appointments: {},
     interviewers: {},
   });
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   // Switch to a new day
   const setDay = (day) => dispatch({ type: SET_DAY, day });
@@ -57,24 +74,20 @@ const useApplicationData = () => {
   };
   // Add the new interview in the appointments state and make the PUT request
   const bookInterview = (id, interview, isEdit = false) => {
+    const current = stateRef.current;
     const appointment = {
-      ...state.appointments[id],
+      ...current.appointments[id],
       interview: { ...interview },
     };
     const appointments = {
-      ...state.appointments,
+      ...current.appointments,
       [id]: appointment,
     };
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then(() => {
-        const days = isEdit
-          ? state.days
-          : state.days.map((day) =>
-              day.name === state.day
-                ? { ...day, spots: Math.max(0, day.spots - 1) }
-                : day
-            );
+        const days = isEdit ? current.days : adjustSpots(current.days, id, -1);
+        stateRef.current = { ...current, appointments, days };
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   };
@@ -85,32 +98,29 @@ const useApplicationData = () => {
 
   // Remove the interview from the appointments state and make a DELETE request
   const cancelInterview = (id) => {
+    const current = stateRef.current;
     const appointment = {
-      ...state.appointments[id],
+      ...current.appointments[id],
       interview: null,
     };
 
     const appointments = {
-      ...state.appointments,
+      ...current.appointments,
       [id]: appointment,
     };
 
     return axios.delete(`/api/appointments/${id}`).then(() => {
-      const days = state.days.map((day) =>
-        day.name === state.day ? { ...day, spots: day.spots + 1 } : day
-      );
+      const days = adjustSpots(current.days, id, 1);
+      stateRef.current = { ...current, appointments, days };
       dispatch({ type: SET_INTERVIEW, appointments, days });
     });
   };
   // Take all the data from the database to set up the initial state
   useEffect(() => {
-    const promiseDays = axios.get("http://localhost:8001/api/days");
-    const promiseAppointments = axios.get(
-      "http://localhost:8001/api/appointments"
-    );
-    const promiseInterviewers = axios.get(
-      "http://localhost:8001/api/interviewers"
-    );
+    const api = process.env.REACT_APP_API_URL || "http://localhost:8003";
+    const promiseDays = axios.get(`${api}/api/days`);
+    const promiseAppointments = axios.get(`${api}/api/appointments`);
+    const promiseInterviewers = axios.get(`${api}/api/interviewers`);
 
     Promise.all([promiseDays, promiseAppointments, promiseInterviewers]).then(
       (all) => {

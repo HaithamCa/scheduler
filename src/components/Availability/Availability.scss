@@ -5,7 +5,7 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  min-height: 100vh;
+  min-height: 0;
   margin: 0;
   padding: 2.25rem 2.5rem 3rem;
   background: #f4f6f8;
@@ -13,7 +13,7 @@
 
 .availability__inner {
   width: 100%;
-  max-width: 46rem;
+  max-width: 52rem;
 }
 
 .availability__header {
@@ -69,32 +69,45 @@
   background: rgba($dark-background, 0.08);
 }
 
+.availability__board {
+  overflow: hidden;
+  border: 1px solid darken($white, 10%);
+  border-radius: 1rem;
+  background: $white;
+}
+
 .availability__week {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.6rem;
-  margin-bottom: 1.25rem;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid darken($white, 10%);
 }
 
 .availability__day {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  padding: 0.8rem 0.7rem;
-  border: 1px solid darken($white, 12%);
-  border-radius: 0.8rem;
-  background: $white;
+  padding: 0.9rem 0.75rem;
+  border: 0;
+  border-right: 1px solid darken($white, 10%);
+  border-radius: 0;
+  background: transparent;
   color: $dark-background;
   font-family: $font-family;
   text-align: left;
   cursor: pointer;
 
+  &:last-child {
+    border-right: 0;
+  }
+
   &:hover {
-    border-color: $booked-color;
+    background: darken($white, 4%);
   }
 
   &--selected {
-    border-color: $dark-background;
+    border-color: darken($white, 10%);
     background: $dark-background;
     color: $white;
   }
@@ -133,30 +146,26 @@
   opacity: 0.75;
 }
 
-.availability__legend {
-  display: flex;
-  gap: 1.2rem;
-  margin-bottom: 1rem;
-  color: #8395a7;
-  font-size: 0.85rem;
-  font-weight: 600;
+.availability__hours {
+  padding: 1.25rem 1.25rem 1.4rem;
+  background: #f4f6f8;
 }
 
-.availability__dot {
-  display: inline-block;
-  width: 0.65rem;
-  height: 0.65rem;
-  margin-right: 0.4rem;
-  border-radius: 50%;
-  vertical-align: middle;
+.availability__hours-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
 
-  &--open {
-    background: $confirm-color;
-  }
-
-  &--busy {
-    background: $dark-background;
-  }
+.availability__hours-title {
+  margin: 0;
+  color: $dark-background;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .availability__slots {
@@ -172,9 +181,17 @@
   border-radius: 0.85rem;
 }
 
+.availability__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 1.1rem;
+}
+
 .availability__hit {
   display: grid;
-  grid-template-columns: 4.5rem 1fr auto;
+  grid-template-columns: 4.5rem 1fr;
   align-items: center;
   gap: 1rem;
   width: 100%;
@@ -269,28 +286,46 @@
   border: 2px solid rgba($white, 0.7);
 }
 
-.availability__badge {
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
+.availability__slot-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.availability__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.4rem;
+  white-space: nowrap;
+  height: 2.2rem;
+  padding: 0 0.9rem;
+  border-radius: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
-.availability__slot--open .availability__badge {
-  color: darken($confirm-color, 10%);
-  background: rgba($confirm-color, 0.16);
-}
-
-.availability__slot--busy .availability__badge,
-.availability__slot--mine .availability__badge {
+.availability__status--open {
   color: $white;
-  background: rgba($white, 0.12);
+  background: $confirm-color;
 }
 
-.availability__dot--mine {
-  background: $booked-color;
+.availability__status--booked {
+  color: $white;
+  background: $danger-color;
+}
+
+button.availability__status {
+  border: 0;
+  font-family: $font-family;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.75;
+  }
 }
 
 .availability__error {
@@ -410,11 +445,21 @@
     overflow-x: auto;
   }
 
+  .availability__hours {
+    padding: 1rem 0.85rem 1.15rem;
+  }
+
+  .availability__row {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+    padding-bottom: 0.85rem;
+  }
+
   .availability__hit {
     grid-template-columns: 3.8rem 1fr;
   }
 
-  .availability__badge {
-    display: none;
+  .availability__slot-actions {
+    padding: 0 1.1rem;
   }
 }

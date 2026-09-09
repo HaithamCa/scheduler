@@ -44,7 +44,7 @@ export default function Application({ user, onLogout }) {
       </Sidebar>
       <section className="schedule">
         {schedule}
-        <Appointment key="last" time="5pm" />
+        <Appointment key="last" time="6pm" />
       </section>
     </main>
   );
