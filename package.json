@@ -47,7 +47,7 @@
     "prop-types": "^15.7.2",
     "react-test-renderer": "^16.9.0"
   },
-  "proxy": "http://localhost:8001",
+  "proxy": "http://localhost:8003",
   "jest": {
     "watchPathIgnorePatterns": [
       "<rootDir>/node_modules/",

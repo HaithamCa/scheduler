@@ -4,7 +4,7 @@ A React app for booking weekday interviews. One calendar, two doors into it.
 
 **Coordinators** see the full board: who is coming, who is interviewing them, and the tools to add, edit, or cancel. **Students** see which hours are open or taken, pick a free slot, and only then learn who they will meet. Other people’s names stay hidden.
 
-The client runs at [http://localhost:8000](http://localhost:8000). It talks to the [scheduler API](https://github.com/lighthouse-labs/scheduler-api) on port 8001.
+The client runs at [http://localhost:3000](http://localhost:3000). It talks to the [scheduler API](https://github.com/lighthouse-labs/scheduler-api) on port 8003.
 
 ## Two views
 
@@ -42,7 +42,7 @@ npm start
 Reset seed data anytime:
 
 ```sh
-curl http://localhost:8001/api/debug/reset
+curl http://localhost:8003/api/debug/reset
 ```
 
 In this repo:
@@ -53,14 +53,14 @@ npm install
 npm start
 ```
 
-Open [http://localhost:8000](http://localhost:8000).
+Open [http://localhost:3000](http://localhost:3000).
 
 Accounts are stored in this browser (not on the API). Passwords are hashed before they are saved.
 
 ## Scripts
 
 ```sh
-npm start          # webpack dev server, port 8000
+npm start          # webpack dev server, port 3000
 npm test           # Jest
 npm run storybook  # component workshop, port 9009
 npm run cypress    # end-to-end tests
