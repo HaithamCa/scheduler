@@ -1,0 +1,26 @@
+---
+description: Treat docs/USER_GUIDE.md as the functional source of truth before any product change.
+alwaysApply: true
+---
+
+# Interview Scheduler — functional source of truth
+
+Before implementing or changing behavior, **read** `docs/USER_GUIDE.md`. That file is the functional source of truth for roles, permissions, booking, cancel, privacy, slot states, hours, and API usage.
+
+## Do
+
+- Match the guide’s product rules (section 13) unless the user explicitly overrides them.
+- Prefer the guide over `README.md` if they disagree.
+- Ask before a significant behavioral change.
+
+## Do not
+
+- Silently “fix” behavior when code and the guide conflict. **Explain the conflict and ask first.**
+- Change application code while only updating docs, or the reverse, without saying so.
+- Invent a third role, server-side auth, live WebSocket sync, or an interviewer picker for students unless the user asks and the guide is updated.
+
+## If conflicted
+
+1. Quote the guide rule and the current code.
+2. Ask which one to keep.
+3. If the user chooses a new behavior, update `docs/USER_GUIDE.md` in the same change.
