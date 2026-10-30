@@ -21,16 +21,17 @@ There is no React Router. After sign-in, `src/index.js` renders either `Applicat
 
 | Service | URL | Notes |
 | --- | --- | --- |
-| Frontend | http://localhost:3000 | CRA; `.env.development` sets `PORT=3000` |
-| API | http://localhost:8003 | Companion repo `scheduler-api` |
+| Frontend (local) | http://localhost:3000 | CRA; `.env.development` sets `PORT=3000` |
+| API (local) | http://localhost:8003 | Companion repo `scheduler-api` |
+| Frontend (live) | https://haithamca.github.io/scheduler | GitHub Pages |
+| API (live) | Hosted `scheduler-api` origin | Set as `REACT_APP_API_URL` at build time |
 | API reset | http://localhost:8003/api/debug/reset | Dev/test only; reseeds Postgres |
 | Storybook | http://localhost:9009 | `npm run storybook` |
 | Postgres | localhost:5432 | Database `scheduler_development` |
 
-Frontend `package.json` has `"proxy": "http://localhost:8003"`.
+Frontend `package.json` has `"proxy": "http://localhost:8003"` for local development.
 
-- **GET** days / appointments / interviewers use the **absolute** API host `http://localhost:8003`.
-- **PUT / DELETE** appointments use the **proxy** path `/api/appointments/:id`.
+All days / appointments / interviewers requests (GET, PUT, DELETE) use `REACT_APP_API_URL` (`http://localhost:8003` in development).
 
 `.env.development` also sets `REACT_APP_WEBSOCKET_URL=ws://localhost:8003`. The API can broadcast appointment changes; **the React app does not subscribe**. Other browsers/tabs do not live-update.
 

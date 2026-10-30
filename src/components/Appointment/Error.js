@@ -1,4 +1,5 @@
 import React from "react";
+import asset from "helpers/asset";
 
 const Error = (props) => {
   return (
@@ -9,7 +10,7 @@ const Error = (props) => {
       </section>
       <img
         className="appointment__error-close"
-        src="images/close.png"
+        src={asset("images/close.png")}
         alt="Close"
         onClick={props.onClose}
       />

@@ -1,4 +1,5 @@
 import React from "react";
+import asset from "helpers/asset";
 import "./AppHeader.scss";
 
 function initials(name) {
@@ -18,7 +19,7 @@ export default function AppHeader({ user, onLogout }) {
     <header className="app-header">
       <img
         className="app-header__logo"
-        src="images/logo.png"
+        src={asset("images/logo.png")}
         alt="Interview Scheduler"
       />
       {user && (

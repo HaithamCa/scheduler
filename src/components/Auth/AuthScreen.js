@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DEMO_ACCOUNT, VIEWER_ACCOUNT } from "hooks/useAuth";
+import asset from "helpers/asset";
 import "./AuthScreen.scss";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -7,7 +8,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function AuthSplash() {
   return (
     <div className="auth-splash" role="status" aria-live="polite">
-      <img src="images/logo.png" alt="Interview Scheduler" />
+      <img src={asset("images/logo.png")} alt="Interview Scheduler" />
     </div>
   );
 }
@@ -96,7 +97,7 @@ export default function AuthScreen({ onLogin, onRegister, onDemo, onViewerDemo }
       <section className="auth__brand">
         <img
           className="auth__logo"
-          src="images/logo.png"
+          src={asset("images/logo.png")}
           alt="Interview Scheduler"
         />
         <h1 className="auth__headline">Plan the week in minutes.</h1>

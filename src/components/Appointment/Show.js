@@ -1,4 +1,5 @@
 import React from "react";
+import asset from "helpers/asset";
 
 const Show = (props) => {
   const { interviewer, student } = props;
@@ -15,13 +16,13 @@ const Show = (props) => {
         <section className="appointment__actions">
           <img
             className="appointment__actions-button"
-            src="images/edit.png"
+            src={asset("images/edit.png")}
             alt="Edit"
             onClick={() => props.onEdit()}
           />
           <img
             className="appointment__actions-button"
-            src="images/trash.png"
+            src={asset("images/trash.png")}
             alt="Delete"
             onClick={() => props.onDelete()}
           />

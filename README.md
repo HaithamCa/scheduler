@@ -4,7 +4,9 @@ A React app for booking weekday interviews. One calendar, two doors into it.
 
 **Coordinators** see the full board: who is coming, who is interviewing them, and the tools to add, edit, or cancel. **Students** see which hours are open or taken, pick a free slot, and only then learn who they will meet. Other people’s names stay hidden.
 
-The client runs at [http://localhost:3000](http://localhost:3000). It talks to the [scheduler API](https://github.com/lighthouse-labs/scheduler-api) on port 8003.
+Live demo: [https://haithamca.github.io/scheduler](https://haithamca.github.io/scheduler)
+
+Locally the client runs at [http://localhost:3000](http://localhost:3000). It talks to the [scheduler API](https://github.com/lighthouse-labs/scheduler-api) on port 8003. Demo logins: coordinator `demo@scheduler.app` / `demo1234`, student `viewer@scheduler.app` / `viewer1234`.
 
 ## Two views
 

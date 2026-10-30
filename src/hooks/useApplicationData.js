@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useRef } from "react";
 import axios from "axios";
+import apiBase from "helpers/apiBase";
 
 function dayHasAppointment(day, appointmentId) {
   return (day.appointments || []).some(
@@ -84,7 +85,7 @@ const useApplicationData = () => {
       [id]: appointment,
     };
     return axios
-      .put(`/api/appointments/${id}`, { interview })
+      .put(`${apiBase()}/api/appointments/${id}`, { interview })
       .then(() => {
         const days = isEdit ? current.days : adjustSpots(current.days, id, -1);
         stateRef.current = { ...current, appointments, days };
@@ -109,7 +110,7 @@ const useApplicationData = () => {
       [id]: appointment,
     };
 
-    return axios.delete(`/api/appointments/${id}`).then(() => {
+    return axios.delete(`${apiBase()}/api/appointments/${id}`).then(() => {
       const days = adjustSpots(current.days, id, 1);
       stateRef.current = { ...current, appointments, days };
       dispatch({ type: SET_INTERVIEW, appointments, days });
@@ -117,7 +118,7 @@ const useApplicationData = () => {
   };
   // Take all the data from the database to set up the initial state
   useEffect(() => {
-    const api = process.env.REACT_APP_API_URL || "http://localhost:8003";
+    const api = apiBase();
     const promiseDays = axios.get(`${api}/api/days`);
     const promiseAppointments = axios.get(`${api}/api/appointments`);
     const promiseInterviewers = axios.get(`${api}/api/interviewers`);
