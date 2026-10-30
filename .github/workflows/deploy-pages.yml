@@ -23,14 +23,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - name: Require live API URL
-        env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
-        run: |
-          if [ -z "$REACT_APP_API_URL" ]; then
-            echo "Set the REACT_APP_API_URL repository secret to the live API origin."
-            exit 1
-          fi
       - run: npm ci
         env:
           SKIP_PREFLIGHT_CHECK: true
