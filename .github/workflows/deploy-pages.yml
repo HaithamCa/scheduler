@@ -16,21 +16,20 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 16
           cache: npm
-      - run: npm ci
+      - run: npm install --legacy-peer-deps
         env:
           SKIP_PREFLIGHT_CHECK: true
       - run: npm run build
         env:
           CI: false
           SKIP_PREFLIGHT_CHECK: true
-          NODE_OPTIONS: --openssl-legacy-provider
           PUBLIC_URL: /scheduler
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
       - uses: actions/configure-pages@v5
